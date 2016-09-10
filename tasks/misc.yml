@@ -1,0 +1,24 @@
+---
+
+- name: Updates cache
+  apt: update_cache=yes
+  become_user: root
+
+- name: Installs necessary packages
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - git
+    - openjdk-8-jdk
+    - unzip
+    - htop
+  become_user: root
+  
+- name: Sets keyboard settings
+  copy: src=keyboard dest=/etc/default/keyboard
+  become_user: root
+- name: Brings .tmux.conf
+  copy: src=.tmux.conf dest=~/.tmux.conf
+
+- name: Meow
+  file: path={{ ansible_env.HOME }}/Meaw state=touch 
+

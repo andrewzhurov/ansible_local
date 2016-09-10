@@ -1,0 +1,23 @@
+---
+- name: Docker [] Installs dependencies
+  apt: name={{ item }} state=latest
+  with_items:
+    - apt-transport-https 
+    - ca-certificates
+    
+- name: Docker [] Adds the new GPG key
+  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D state=present
+- name: Docker [] Deletes docker.list
+  file: path=/etc/apt/sources.list.d/docker.list state=absent
+## Works only on 16.04
+- name: Docker [] Copies our docker.list
+  copy: src=docker.list dest=/etc/apt/sources.list.d/docker.list
+- name: Docker [] Updates cache
+  apt: update_cache=yes
+- name: Docker [] Purges the old repo, in case it exists
+  apt: name=lxc-docker state=absent purge=yes
+- name: Docker [] Installs Docker
+  apt: name=docker-engine state=present
+    
+
+## Steps from https://docs.docker.com/engine/installation/linux/ubuntulinux/

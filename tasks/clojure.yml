@@ -1,0 +1,13 @@
+---
+- name: Downloads leiningen
+  get_url: url=https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein dest=/usr/bin/ mode=0755
+  become_user: root
+
+- name: Removes .lein
+  file: path={{ ansible_env.HOME }}/.lein state=absent
+
+- name: Launches lein
+  shell: lein
+
+- name: Sets lein config 
+  copy: src=profiles.clj dest={{ ansible_env.HOME }}/.lein/profiles.clj

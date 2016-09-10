@@ -1,0 +1,11 @@
+---
+# use --become-user <your_user> for changes being made upon upon the user
+# and don't forget about --ask-sudo-pass
+- hosts: all
+  tasks:
+  - include: misc.yml
+#  - include: docker.yml
+#    become_user: root
+  - include: clojure.yml
+  - include: emacs.yml 
+  become: true

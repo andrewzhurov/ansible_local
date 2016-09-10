@@ -1,0 +1,4 @@
+localhost ansible_connection=local
+DO ansible_host=46.101.252.247 ansible_ssh_user=root ansible_ssh_private_file=/home/andrew/.ssh/pair 
+[remote]
+org.example.my ansible_host=46.101.190.104 ansible_user=mlg
