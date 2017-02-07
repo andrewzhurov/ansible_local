@@ -19,5 +19,20 @@
 - name: Docker [] Installs Docker
   apt: name=docker-engine state=present
     
-
 ## Steps from https://docs.docker.com/engine/installation/linux/ubuntulinux/
+
+## Add user to docker group, so no need of sudo: http://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo
+
+- name: Docker [] Creates 'docker' group
+  group:
+    name: docker
+    state: present
+- name: Docker [] Adds user to the group
+  user:
+    groups: docker
+    append: yes
+    
+- name: Docker [] Restarts docker daemon
+  service:
+    name: docker
+    state: restarted
