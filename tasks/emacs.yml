@@ -7,3 +7,10 @@
   file: path={{ ansible_env.HOME }}/.emacs.d state=absent
 - name: Set config[2/2] Bring .emacs.d
   copy: src=.emacs.d dest={{ ansible_env.HOME }}/ 
+
+- name: Adds alias
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.profile"
+    line: "alias em='emacsclient -nw'"
+
+

@@ -9,5 +9,7 @@
 - name: Launches lein
   shell: lein
 
-- name: Sets lein config 
-  copy: src=profiles.clj dest={{ ansible_env.HOME }}/.lein/profiles.clj
+- name: Sets lein config
+  template:
+    src: ../files/profiles.j2
+    dest: "{{ ansible_env.HOME }}/.lein/profiles.clj"

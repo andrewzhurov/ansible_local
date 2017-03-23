@@ -1,0 +1,8 @@
+---
+# TODO add possibility of different libs choice
+- name: Installs re-natal
+  npm:
+    name: re-natal
+    state: latest
+    global: yes
+ 

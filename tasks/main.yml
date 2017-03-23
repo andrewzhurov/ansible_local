@@ -4,8 +4,23 @@
 - hosts: all
   tasks:
   - include: misc.yml
-#  - include: docker.yml
-#    become_user: root
+    tags: misc
+
+  - include: react-native.yml
+    vars:
+        nodejs_ppa_path: "{{ ansible_env.HOME }}/nodejs-setup.sh"
+    tags: react-native
+
+  - include: docker.yml
+    become_user: root
+    tags: docker
+
   - include: clojure.yml
+    tags: clojure
+
+  - include: cljsrn.yml
+    tags: cljsrn
+
   - include: emacs.yml 
+    tags: emacs
   become: true

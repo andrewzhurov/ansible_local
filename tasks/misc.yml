@@ -7,6 +7,7 @@
 - name: Installs necessary packages
   apt: pkg={{ item }} state=latest
   with_items:
+    - chromium-browser
     - git
     - openjdk-8-jdk
     - unzip
@@ -15,10 +16,11 @@
   become_user: root
   
 - name: Sets keyboard settings
-  copy: src=keyboard dest=/etc/default/keyboard
+  copy: src=../files/keyboard dest=/etc/default/keyboard
   become_user: root
+
 - name: Brings .tmux.conf
-  copy: src=.tmux.conf dest=~/.tmux.conf
+  copy: src=../files/.tmux.conf dest=~/.tmux.conf
 
 - name: Meow
   file: path={{ ansible_env.HOME }}/Meaw state=touch 
