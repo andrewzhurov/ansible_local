@@ -11,7 +11,7 @@
   file: path=/etc/apt/sources.list.d/docker.list state=absent
 ## Works only on 16.04
 - name: Docker [] Copies our docker.list
-  copy: src=docker.list dest=/etc/apt/sources.list.d/docker.list
+  copy: src=../files/docker.list dest=/etc/apt/sources.list.d/docker.list
 - name: Docker [] Updates cache
   apt: update_cache=yes
 - name: Docker [] Purges the old repo, in case it exists
@@ -29,7 +29,7 @@
     state: present
 - name: Docker [] Adds user to the group
   user:
-    name: {{ansible_user_id}} 
+    name: "{{ansible_user_id}}"
     groups: docker
     append: yes
     
