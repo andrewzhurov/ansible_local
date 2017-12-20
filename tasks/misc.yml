@@ -13,6 +13,7 @@
     - unzip
     - htop
     - tree
+    - vim
   become_user: root
   
 - name: Sets keyboard settings
