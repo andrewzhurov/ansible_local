@@ -1,0 +1,35 @@
+---
+- name: Installs emacs
+  apt: pkg=emacs state=latest
+  become_user: root
+
+- name: Backups emacs config
+  copy:
+    src: "{{ ansible_env.HOME }}/.emacs.d"
+    dest: "{{ ansible_env.HOME }}/.emacs.d.bak"
+    
+- name: Removes backed up emacs config
+  file:
+    path: "{{ ansible_env.HOME }}/.emacs.d"
+    state: absent
+  
+- name: Adds spacemacs config
+  git:
+    repo: https://github.com/syl20bnr/spacemacs
+    dest: "{{ ansible_env.HOME }}/.emacs.d/"
+    force: yes
+
+# TODO: Add keybinding swaps for Dvorak
+#;; My custom 
+#;; Keybinding swaps for Dvorak
+#(define-key key-translation-map [?\C-x] [?\C-u])
+#(define-key key-translation-map [?\C-u] [?\C-x])
+#(define-key key-translation-map [?\M-x] [?\M-u])
+#(define-key key-translation-map [?\M-u] [?\M-x])
+
+
+- name: Adds alias
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.profile"
+    line: "alias em='emacsclient -nw'"
+

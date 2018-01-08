@@ -23,4 +23,7 @@
 
   - include: emacs.yml 
     tags: emacs
+    
+  - include: spacemacs.yml
+    tags: spacemacs
   become: true
