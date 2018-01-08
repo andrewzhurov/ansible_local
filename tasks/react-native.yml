@@ -37,6 +37,7 @@
   git:
     repo: https://github.com/facebook/watchman.git
     dest: "{{ ansible_env.HOME }}/watchman/"
+    force: yes
     
 - name: Watchman[] Build and install
   shell: |
@@ -56,6 +57,7 @@
   file:
     path: "{{ ansible_env.HOME }}/watchman"
     state: absent
+  become_user: root
 
 - name: Watchman[] Postinstall
   shell: "bash echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances && echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances && echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances"
