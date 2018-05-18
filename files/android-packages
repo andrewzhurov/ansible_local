@@ -1,0 +1,6 @@
+build-tools;26.0.3
+platforms;android-26
+sources;android-26
+ndk-bundle
+platform-tools
+docs

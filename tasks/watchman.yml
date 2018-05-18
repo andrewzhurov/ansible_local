@@ -1,0 +1,32 @@
+---
+# $ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+# $ sudo sysctl -p
+
+- name: Watchman[1/5] Clone watchman repo
+  git:
+    repo: https://github.com/facebook/watchman.git
+    dest: "{{ ansible_env.HOME }}/watchman/"
+    force: yes
+    
+- name: Watchman[2/5] Build and install
+  shell: |
+    ./autogen.sh
+    ./configure
+    make
+  args:
+    chdir: "{{ ansible_env.HOME }}/watchman"
+    
+- name: Watchman[3/5] Sudo Build and install
+  shell: "make install"
+  args:
+    chdir: "{{ ansible_env.HOME }}/watchman"
+  become_user: root
+ 
+- name: Watchman[4/5] Delete cloned repo
+  file:
+    path: "{{ ansible_env.HOME }}/watchman"
+    state: absent
+  become_user: root
+
+- name: Watchman[5/5] Postinstall
+  shell: "bash echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances && echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances && echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances"

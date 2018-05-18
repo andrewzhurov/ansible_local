@@ -6,10 +6,7 @@
   - include: misc.yml
     tags: misc
 
-  - include: react-native.yml
-    vars:
-        nodejs_ppa_path: "{{ ansible_env.HOME }}/nodejs-setup.sh"
-    tags: react-native
+ 
 
   - include: docker.yml
     become_user: root
@@ -18,8 +15,16 @@
   - include: clojure.yml
     tags: clojure
 
-  - include: cljsrn.yml
-    tags: cljsrn
+  - include: react-native.yml
+    vars:
+        nodejs_ppa_path: "{{ ansible_env.HOME }}/nodejs-setup.sh"
+    tags: react-native, cljsrn
+
+  - include: watchman.yml
+    tags: watchman, cljsrn
+
+  - include: android.yml
+    tags: android, cljsrn
 
   - include: emacs.yml 
     tags: emacs

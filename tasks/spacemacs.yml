@@ -27,6 +27,37 @@
 #(define-key key-translation-map [?\M-x] [?\M-u])
 #(define-key key-translation-map [?\M-u] [?\M-x])
 
+# Tealnet goodies
+#(require 'cider)
+#(setq cider-cljs-lein-repl
+#      "(do (require 'figwheel-sidecar.repl-api)
+#           (figwheel-sidecar.repl-api/start-figwheel!)
+#           (figwheel-sidecar.repl-api/cljs-repl))")
+#
+#(defun get-string-from-file (filePath)
+#  "Return filePath's file content."
+#  (with-temp-buffer
+#    (insert-file-contents filePath)
+#    (buffer-string)))
+#
+#(defun load-envs ()
+#  (interactive)
+#  (-> (get-string-from-file "~/samurai/tealnet/.env")
+#      (split-string "\n")
+#      (->> (mapcar (lambda (s) (split-string s " ")))
+#           (mapcar `rest)
+#           (mapcar `string-join)
+#           (mapcar (lambda (s)
+#                     (setenv
+#                      (first (split-string s "="))
+#                      (string-join (rest (split-string s "=")) "=")))))))
+#
+#;;(load-envs)
+#
+# Slurp/burf I'm used to
+#(global-set-key (kbd "C-<right>") 'paredit-forward-slurp-sexp)
+#(global-set-key (kbd "C-<left>")  'paredit-forward-barf-sexp)
+
 
 - name: Adds alias
   lineinfile:

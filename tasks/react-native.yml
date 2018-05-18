@@ -1,25 +1,23 @@
 ---
-# TODO add optional emulator step
-# TODO Strip version to default var
-- name: NodeJS[] Download shell script for add nodejs PPA
+- name: NodeJS[1/4] Download shell script for add nodejs PPA
   get_url: 
-    url: https://deb.nodesource.com/setup_7.x
+    url: https://deb.nodesource.com/setup_8.x
     dest: "{{ nodejs_ppa_path }}"
     mode: 0755
   become_user: root
 - debug:
     msg: "{{ nodejs_ppa_path }}"
 
-- name: NodeJS[] Add nodejs PPA
+- name: NodeJS[2/4] Add nodejs PPA
   shell: "bash {{ nodejs_ppa_path }}"
   become_user: root
 
-- name: NodeJS[] Delete shell script
+- name: NodeJS[3/4] Delete shell script
   file:
     path: "{{ nodejs_ppa_path }}"
     state: absent
 
-- name: NodeJS[] Install necessary libs
+- name: NodeJS[4/4] Install necessary libs
   apt: pkg={{ item }} state=latest
   with_items:
     - nodejs
@@ -33,72 +31,9 @@
     - libssl-dev
   become_user: root
 
-- name: Watchman[] Clone watchman repo
-  git:
-    repo: https://github.com/facebook/watchman.git
-    dest: "{{ ansible_env.HOME }}/watchman/"
-    force: yes
-    
-- name: Watchman[] Build and install
-  shell: |
-    ./autogen.sh
-    ./configure
-    make
-  args:
-    chdir: "{{ ansible_env.HOME }}/watchman"
-    
-- name: Watchman[] Sudo Build and install
-  shell: "make install"
-  args:
-    chdir: "{{ ansible_env.HOME }}/watchman"
-  become_user: root
- 
-- name: Watchman[] Delete cloned repo
-  file:
-    path: "{{ ansible_env.HOME }}/watchman"
-    state: absent
-  become_user: root
-
-- name: Watchman[] Postinstall
-  shell: "bash echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances && echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances && echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances"
-  
-- name: Install react-native-cli
+- name: Installs react-native-cli
   npm:
     name: react-native-cli
     state: latest
     global: yes
-
-- name: Create dir for DKs
-  file:
-    path: "{{ ansible_env.HOME }}/dk"
-    state: directory
-
-- name: Android[] Create dir for android dk 
-  file:
-    path: "{{ ansible_env.HOME }}/dk/android"
-    state: directory
-    
-- name: Android[] Download android tools
-  unarchive:
-    src: https://dl.google.com/android/repository/tools_r25.2.3-linux.zip
-    dest: "{{ ansible_env.HOME }}/dk/android/"
-    remote_src: True 
-
-- name: Android[] Set ANDROID_HOME
-  lineinfile:
-    dest: "{{ ansible_env.HOME }}/.profile"
-    line: "export ANDROID_HOME=${HOME}/dk/android"
-
-- name: Android[] Add to PATH android tools dest 
-  lineinfile:
-    dest: "{{ ansible_env.HOME }}/.profile"
-    line: "export PATH=${PATH}:${ANDROID_HOME}/tools"
-
-- name: Android[] Add to PATH android platform-tools dest
-  lineinfile:
-    dest: "{{ ansible_env.HOME }}/.profile"
-    line: "export PATH=${PATH}:${ANDROID_HOME}/platform-tools"
-
-# Won't work 'cause sdkmanager need acceptance of licences
-# - name: Android[] Download default android dk stuff
-#   shell: "bash {{ ansible_env.HOME }}/dk/android/tools/bin/sdkmanager \"platforms;android-25\" \"build-tools;25.0.0\" \"platforms;android-23\" \"build-tools;23.0.3\""
+  become_user: root

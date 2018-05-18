@@ -1,0 +1,42 @@
+# Presents android tools and packages
+# TODO add optional emulator step
+# TODO parametrise tool version
+---
+- name: Create dir for DKs
+  file:
+    path: "{{ ansible_env.HOME }}/dk"
+    state: directory
+
+- name: Android[1/6] Create dir for android dk 
+  file:
+    path: "{{ ansible_env.HOME }}/dk/android"
+    state: directory
+    
+# Latest on 12-05-2018
+- name: Android[2/6] Download android tools
+  unarchive:
+    src: https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+    dest: "{{ ansible_env.HOME }}/dk/android/"
+    remote_src: True 
+
+- name: Android[3/6] Set ANDROID_HOME
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.profile"
+    line: "export ANDROID_HOME=${HOME}/dk/android\n"
+
+- name: Android[4/6] Add to PATH android tools dest 
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.profile"
+    line: "export PATH=${PATH}:${ANDROID_HOME}/tools"
+
+- name: Android[5/6] Add to PATH android platform-tools dest
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.profile"
+    line: "export PATH=${PATH}:${ANDROID_HOME}/platform-tools"
+
+- name: Android[6/6] Install packages 
+  shell: "while read p; do echo \"y\" | ./sdkmanager \"${p}\"; done < {{ playbook_dir }}/../files/android-packages"
+  #--package_file arg broken in current sdkmanager: https://issuetracker.google.com/issues/66465833
+  #shell: "yes y | bash ./sdkmanager --package_file \"{{ playbook_dir }}/../files/android-tools\""
+  args:
+    chdir: "{{ ansible_env.HOME }}/dk/android/tools/bin"
