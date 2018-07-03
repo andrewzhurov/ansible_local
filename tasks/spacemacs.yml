@@ -8,7 +8,7 @@
     src: "{{ ansible_env.HOME }}/.emacs.d"
     dest: "{{ ansible_env.HOME }}/.emacs.d.bak"
     
-- name: Removes backed up emacs config
+- name: Removes emacs config
   file:
     path: "{{ ansible_env.HOME }}/.emacs.d"
     state: absent
@@ -19,13 +19,16 @@
     dest: "{{ ansible_env.HOME }}/.emacs.d/"
     force: yes
 
-# TODO: Add keybinding swaps for Dvorak
-#;; My custom 
-#;; Keybinding swaps for Dvorak
-#(define-key key-translation-map [?\C-x] [?\C-u])
-#(define-key key-translation-map [?\C-u] [?\C-x])
-#(define-key key-translation-map [?\M-x] [?\M-u])
-#(define-key key-translation-map [?\M-u] [?\M-x])
+- name: Adds Dvorak keybinding adoptation
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.profile"
+    line: "(define-key key-translation-map [?\C-x] [?\C-u])
+(define-key key-translation-map [?\C-u] [?\C-x])
+(define-key key-translation-map [?\M-x] [?\M-u])
+(define-key key-translation-map [?\M-u] [?\M-x])
+(global-set-key (kbd \"C-l\") 'paredit-forward-slurp-sexp)
+(global-set-key (kbd \"C-h\") 'paredit-forward-barf-sexp)
+"
 
 # Tealnet goodies
 #(require 'cider)
@@ -53,14 +56,3 @@
 #                      (string-join (rest (split-string s "=")) "=")))))))
 #
 #;;(load-envs)
-#
-# Slurp/burf I'm used to
-#(global-set-key (kbd "C-<right>") 'paredit-forward-slurp-sexp)
-#(global-set-key (kbd "C-<left>")  'paredit-forward-barf-sexp)
-
-
-- name: Adds alias
-  lineinfile:
-    dest: "{{ ansible_env.HOME }}/.profile"
-    line: "alias em='emacsclient -nw'"
-
