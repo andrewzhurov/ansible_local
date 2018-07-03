@@ -21,14 +21,13 @@
 
 - name: Adds Dvorak keybinding adoptation
   lineinfile:
-    dest: "{{ ansible_env.HOME }}/.profile"
-    line: "(define-key key-translation-map [?\\C-x] [?\\C-u])
-(define-key key-translation-map [?\\C-u] [?\\C-x])
-(define-key key-translation-map [?\\M-x] [?\\M-u])
-(define-key key-translation-map [?\\M-u] [?\\M-x])
-(global-set-key (kbd \"C-l\") 'paredit-forward-slurp-sexp)
-(global-set-key (kbd \"C-h\") 'paredit-forward-barf-sexp)
-"
+    dest: "{{ ansible_env.HOME }}/.emacs.d/init.el"
+    line: "(define-key key-translation-map [?\\C-x] [?\\C-u])\n
+(define-key key-translation-map [?\\C-u] [?\\C-x])\n
+(define-key key-translation-map [?\\M-x] [?\\M-u])\n
+(define-key key-translation-map [?\\M-u] [?\\M-x])\n
+(global-set-key (kbd \"C-l\") 'paredit-forward-slurp-sexp)\n
+(global-set-key (kbd \"C-h\") 'paredit-forward-barf-sexp)"
 
 # Tealnet goodies
 #(require 'cider)
