@@ -13,6 +13,9 @@
   - include: clojure.yml
     tags: clojure
 
+  - include: lein.yml
+    tags: lein
+
   - include: react-native.yml
     vars:
         nodejs_ppa_path: "{{ ansible_env.HOME }}/nodejs-setup.sh"

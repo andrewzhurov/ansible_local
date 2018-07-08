@@ -1,15 +1,10 @@
 ---
-- name: Downloads leiningen
-  get_url: url=https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein dest=/usr/bin/ mode=0755
+- name: Downloads install script
+  get_url: url=https://download.clojure.org/install/linux-install-1.9.0.381.sh dest=~/clojure-install-script.sh mode=1755
+
+- name: Runs install script
+  shell: "{{ ansible_env.HOME }}/clojure-install-script.sh"
   become_user: root
 
-- name: Removes .lein
-  file: path={{ ansible_env.HOME }}/.lein state=absent
-
-- name: Launches lein
-  shell: lein
-
-- name: Sets lein config
-  template:
-    src: ../files/profiles.j2
-    dest: "{{ ansible_env.HOME }}/.lein/profiles.clj"
+- name: Removes install script
+  file: path=~/clojure-install-script.sh state=absent

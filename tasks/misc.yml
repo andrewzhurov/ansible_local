@@ -8,6 +8,8 @@
   apt: pkg={{ item }} state=latest
   with_items:
     - chromium-browser
+    - curl
+    - rlwrap # Repl env helpers
     - git
     - openjdk-8-jdk
     - unzip
