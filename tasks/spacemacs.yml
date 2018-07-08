@@ -1,8 +1,4 @@
 ---
-- name: Installs emacs
-  apt: pkg=emacs state=latest
-  become_user: root
-
 - name: Backups emacs config
   copy:
     src: "{{ ansible_env.HOME }}/.emacs.d"

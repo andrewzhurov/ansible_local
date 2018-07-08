@@ -1,6 +1,11 @@
 ---
-- name: Installs emacs
-  apt: pkg=emacs state=latest
+- name: Adds emacs ppa
+  apt_repository:
+    repo: ppa:kelleyk/emacs
+  become_user: root
+
+- name: Installs emacs25
+  apt: pkg=emacs25 state=latest
   become_user: root
 
 - name: Sets config[1/2] Delete .emacs.d 
