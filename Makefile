@@ -3,7 +3,7 @@ local_cljsrn:
 
 # make install BECOME_USER=user TAGS="emacs,clojure"
 install:
-	ansible-playbook -i hosts -l localhost tasks/main.yml --become-user $(BECOME_USER) --tags $(TAGS)
+	ansible-playbook -i hosts -l localhost tasks/main.yml --become-user $(BECOME_USER) --ask-sudo-pass --tags $(TAGS)
 
 install_ansible:
 	sudo apt-get install software-properties-common
