@@ -16,6 +16,7 @@
     - htop
     - tree
     - vim
+    - tmux
   become_user: root
   
 - name: Sets keyboard settings
